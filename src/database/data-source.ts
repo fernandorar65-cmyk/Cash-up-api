@@ -11,14 +11,17 @@ export const AppDataSource = new DataSource({
   ...(useUrl
     ? { url: process.env.DATABASE_URL }
     : {
-        host: process.env.DB_HOST ?? 'localhost',
-        port: parseInt(process.env.DB_PORT ?? '5432', 10),
-        username: process.env.DB_USER ?? 'postgres',
-        password: process.env.DB_PASSWORD ?? '123456789',
-        database: process.env.DB_NAME ?? 'cash-up',
+        host: 'localhost',
+        port: 5432,
+        username: 'postgres',
+        password: 'postgres',
+        database: 'cashup',
       }),
   entities: [],
   migrations: [InitialSchema1737120000000],
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',
 });
+
+console.log(AppDataSource); 
+console.log(AppDataSource.options); 
