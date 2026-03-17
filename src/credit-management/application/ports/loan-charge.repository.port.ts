@@ -6,4 +6,5 @@ export interface LoanChargeRepositoryPort {
   findById(id: string): Promise<LoanCharge | null>;
   findByLoanId(loanId: string): Promise<LoanCharge[]>;
   save(loanCharge: LoanCharge): Promise<void>;
+  delete(id: string): Promise<void>;
 }

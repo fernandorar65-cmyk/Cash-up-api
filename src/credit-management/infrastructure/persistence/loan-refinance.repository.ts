@@ -1,13 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { LoanRefinanceRepositoryPort } from '../../application/ports/loan-refinance.repository.port';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LoanRefinance } from '../../domain/entities/loan-refinance.entity';
+import type { LoanRefinanceRepositoryPort } from '../../application/ports/loan-refinance.repository.port';
 
 @Injectable()
 export class LoanRefinanceRepository implements LoanRefinanceRepositoryPort {
-  async findById(): Promise<null> {
-    return null;
+  constructor(
+    @InjectRepository(LoanRefinance)
+    private readonly repo: Repository<LoanRefinance>,
+  ) {}
+
+  async findById(id: string): Promise<LoanRefinance | null> {
+    return this.repo.findOne({ where: { id } });
   }
-  async findByOriginalLoanId(): Promise<null> {
-    return null;
+
+  async findByOriginalLoanId(loanId: string): Promise<LoanRefinance | null> {
+    return this.repo.findOne({ where: { originalLoanId: loanId } });
   }
-  async save(): Promise<void> {}
+
+  async save(loanRefinance: LoanRefinance): Promise<void> {
+    await this.repo.save(loanRefinance);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repo.delete(id);
+  }
 }

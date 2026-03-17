@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Payment } from './domain/entities/payment.entity';
+import { PaymentApplication } from './domain/entities/payment-application.entity';
 import {
   PAYMENT_REPOSITORY,
   PAYMENT_APPLICATION_REPOSITORY,
@@ -12,6 +15,9 @@ import { PaymentsController } from './presentation/payments.controller';
 import { LoansPaymentsController } from './presentation/loans-payments.controller';
 
 @Module({
+  imports: [
+    TypeOrmModule.forFeature([Payment, PaymentApplication]),
+  ],
   controllers: [PaymentsController, LoansPaymentsController],
   providers: [
     { provide: PAYMENT_REPOSITORY, useClass: PaymentRepository },

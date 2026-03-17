@@ -6,4 +6,5 @@ export interface LateFeeRepositoryPort {
   findById(id: string): Promise<LateFee | null>;
   findByInstallmentId(installmentId: string): Promise<LateFee[]>;
   save(lateFee: LateFee): Promise<void>;
+  delete(id: string): Promise<void>;
 }

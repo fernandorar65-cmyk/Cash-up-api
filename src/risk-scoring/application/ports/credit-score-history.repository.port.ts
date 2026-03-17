@@ -8,4 +8,5 @@ export interface CreditScoreHistoryRepositoryPort {
   findById(id: string): Promise<CreditScoreHistory | null>;
   findByClientId(clientId: string): Promise<CreditScoreHistory[]>;
   save(creditScoreHistory: CreditScoreHistory): Promise<void>;
+  delete(id: string): Promise<void>;
 }

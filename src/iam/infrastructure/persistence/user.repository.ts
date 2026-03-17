@@ -1,19 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { User } from '../../domain/entities/user.entity';
-import { UserRepositoryPort } from '../../application/ports/user.repository.port';
+import type { UserRepositoryPort } from '../../application/ports/user.repository.port';
 
 @Injectable()
 export class UserRepository implements UserRepositoryPort {
-  async findById(): Promise<User | null> {
-    // Stub: sin lógica de negocio ni persistencia aún
-    return null;
+  constructor(
+    @InjectRepository(User)
+    private readonly repo: Repository<User>,
+  ) {}
+
+  async findById(id: string): Promise<User | null> {
+    return this.repo.findOne({ where: { id } });
   }
 
-  async findByEmail(): Promise<User | null> {
-    return null;
+  async findByEmail(email: string): Promise<User | null> {
+    return this.repo.findOne({ where: { email } });
   }
 
-  async save(): Promise<void> {
-    // Stub
+  async save(user: User): Promise<void> {
+    await this.repo.save(user);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repo.delete(id);
   }
 }

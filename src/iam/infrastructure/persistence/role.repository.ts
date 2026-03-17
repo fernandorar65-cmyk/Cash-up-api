@@ -1,18 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Role } from '../../domain/entities/role.entity';
-import { RoleRepositoryPort } from '../../application/ports/role.repository.port';
+import type { RoleRepositoryPort } from '../../application/ports/role.repository.port';
 
 @Injectable()
 export class RoleRepository implements RoleRepositoryPort {
-  async findById(): Promise<Role | null> {
-    return null;
+  constructor(
+    @InjectRepository(Role)
+    private readonly repo: Repository<Role>,
+  ) {}
+
+  async findById(id: string): Promise<Role | null> {
+    return this.repo.findOne({ where: { id } });
   }
 
   async findAll(): Promise<Role[]> {
-    return [];
+    return this.repo.find({ order: { name: 'ASC' } });
   }
 
-  async save(): Promise<void> {
-    // Stub
+  async save(role: Role): Promise<void> {
+    await this.repo.save(role);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repo.delete(id);
   }
 }

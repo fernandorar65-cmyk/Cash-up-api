@@ -9,4 +9,5 @@ export interface CollectionActionRepositoryPort {
   findByClientId(clientId: string): Promise<CollectionAction[]>;
   findByLoanId(loanId: string): Promise<CollectionAction[]>;
   save(collectionAction: CollectionAction): Promise<void>;
+  delete(id: string): Promise<void>;
 }

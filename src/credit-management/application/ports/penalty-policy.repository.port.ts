@@ -6,4 +6,5 @@ export interface PenaltyPolicyRepositoryPort {
   findById(id: string): Promise<PenaltyPolicy | null>;
   findAllActive(): Promise<PenaltyPolicy[]>;
   save(penaltyPolicy: PenaltyPolicy): Promise<void>;
+  delete(id: string): Promise<void>;
 }

@@ -1,4 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Loan } from './domain/entities/loan.entity';
+import { LoanRefinance } from './domain/entities/loan-refinance.entity';
+import { Installment } from './domain/entities/installment.entity';
+import { LoanCharge } from './domain/entities/loan-charge.entity';
+import { PenaltyPolicy } from './domain/entities/penalty-policy.entity';
+import { LateFee } from './domain/entities/late-fee.entity';
+import { LoanHistory } from './domain/entities/loan-history.entity';
 import {
   LOAN_REPOSITORY,
   LOAN_REFINANCE_REPOSITORY,
@@ -24,6 +32,17 @@ import { LoansController } from './presentation/loans.controller';
 import { InstallmentsController } from './presentation/installments.controller';
 
 @Module({
+  imports: [
+    TypeOrmModule.forFeature([
+      Loan,
+      LoanRefinance,
+      Installment,
+      LoanCharge,
+      PenaltyPolicy,
+      LateFee,
+      LoanHistory,
+    ]),
+  ],
   controllers: [LoansController, InstallmentsController],
   providers: [
     { provide: LOAN_REPOSITORY, useClass: LoanRepository },

@@ -8,4 +8,5 @@ export interface PaymentApplicationRepositoryPort {
   findById(id: string): Promise<PaymentApplication | null>;
   findByPaymentId(paymentId: string): Promise<PaymentApplication[]>;
   save(paymentApplication: PaymentApplication): Promise<void>;
+  delete(id: string): Promise<void>;
 }

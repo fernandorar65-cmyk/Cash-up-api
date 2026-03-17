@@ -1,15 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { PaymentApplicationRepositoryPort } from '../../application/ports/payment-application.repository.port';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PaymentApplication } from '../../domain/entities/payment-application.entity';
+import type { PaymentApplicationRepositoryPort } from '../../application/ports/payment-application.repository.port';
 
 @Injectable()
 export class PaymentApplicationRepository
   implements PaymentApplicationRepositoryPort
 {
-  async findById(): Promise<null> {
-    return null;
+  constructor(
+    @InjectRepository(PaymentApplication)
+    private readonly repo: Repository<PaymentApplication>,
+  ) {}
+
+  async findById(id: string): Promise<PaymentApplication | null> {
+    return this.repo.findOne({ where: { id } });
   }
-  async findByPaymentId(): Promise<[]> {
-    return [];
+
+  async findByPaymentId(paymentId: string): Promise<PaymentApplication[]> {
+    return this.repo.find({
+      where: { paymentId },
+      order: { appliedAt: 'ASC' },
+    });
   }
-  async save(): Promise<void> {}
+
+  async save(paymentApplication: PaymentApplication): Promise<void> {
+    await this.repo.save(paymentApplication);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repo.delete(id);
+  }
 }

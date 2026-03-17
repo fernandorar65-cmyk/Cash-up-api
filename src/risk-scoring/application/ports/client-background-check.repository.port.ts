@@ -8,4 +8,5 @@ export interface ClientBackgroundCheckRepositoryPort {
   findById(id: string): Promise<ClientBackgroundCheck | null>;
   findByClientId(clientId: string): Promise<ClientBackgroundCheck[]>;
   save(clientBackgroundCheck: ClientBackgroundCheck): Promise<void>;
+  delete(id: string): Promise<void>;
 }

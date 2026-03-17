@@ -8,4 +8,5 @@ export interface CreditEvaluationRepositoryPort {
   findById(id: string): Promise<CreditEvaluation | null>;
   findByClientId(clientId: string): Promise<CreditEvaluation[]>;
   save(creditEvaluation: CreditEvaluation): Promise<void>;
+  delete(id: string): Promise<void>;
 }

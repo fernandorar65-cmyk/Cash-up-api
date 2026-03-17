@@ -6,4 +6,5 @@ export interface ClientRepositoryPort {
   findById(id: string): Promise<Client | null>;
   findByDocument(documentType: string, documentNumber: string): Promise<Client | null>;
   save(client: Client): Promise<void>;
+  delete(id: string): Promise<void>;
 }

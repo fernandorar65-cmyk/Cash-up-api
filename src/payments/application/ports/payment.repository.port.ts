@@ -7,4 +7,5 @@ export interface PaymentRepositoryPort {
   findByLoanId(loanId: string): Promise<Payment[]>;
   findByClientId(clientId: string): Promise<Payment[]>;
   save(payment: Payment): Promise<void>;
+  delete(id: string): Promise<void>;
 }

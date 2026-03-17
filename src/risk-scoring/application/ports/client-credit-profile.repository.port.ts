@@ -8,4 +8,5 @@ export interface ClientCreditProfileRepositoryPort {
   findById(id: string): Promise<ClientCreditProfile | null>;
   findByClientId(clientId: string): Promise<ClientCreditProfile | null>;
   save(clientCreditProfile: ClientCreditProfile): Promise<void>;
+  delete(id: string): Promise<void>;
 }

@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CollectionAction } from './domain/entities/collection-action.entity';
 import { COLLECTION_ACTION_REPOSITORY } from './application/ports';
 import { CollectionActionRepository } from './infrastructure/persistence/collection-action.repository';
 import { GetCollectionActionUseCase } from './application/use-cases/get-collection-action.use-case';
@@ -7,6 +9,7 @@ import { ListCollectionActionsByLoanUseCase } from './application/use-cases/list
 import { CollectionActionsController } from './presentation/collection-actions.controller';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([CollectionAction])],
   controllers: [CollectionActionsController],
   providers: [
     {

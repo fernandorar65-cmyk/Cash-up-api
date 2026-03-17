@@ -1,13 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { PenaltyPolicyRepositoryPort } from '../../application/ports/penalty-policy.repository.port';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PenaltyPolicy } from '../../domain/entities/penalty-policy.entity';
+import type { PenaltyPolicyRepositoryPort } from '../../application/ports/penalty-policy.repository.port';
 
 @Injectable()
 export class PenaltyPolicyRepository implements PenaltyPolicyRepositoryPort {
-  async findById(): Promise<null> {
-    return null;
+  constructor(
+    @InjectRepository(PenaltyPolicy)
+    private readonly repo: Repository<PenaltyPolicy>,
+  ) {}
+
+  async findById(id: string): Promise<PenaltyPolicy | null> {
+    return this.repo.findOne({ where: { id } });
   }
-  async findAllActive(): Promise<[]> {
-    return [];
+
+  async findAllActive(): Promise<PenaltyPolicy[]> {
+    return this.repo.find({
+      where: { isActive: true },
+      order: { name: 'ASC' },
+    });
   }
-  async save(): Promise<void> {}
+
+  async save(penaltyPolicy: PenaltyPolicy): Promise<void> {
+    await this.repo.save(penaltyPolicy);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repo.delete(id);
+  }
 }

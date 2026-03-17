@@ -6,4 +6,5 @@ export interface ExternalDebtRepositoryPort {
   findById(id: string): Promise<ExternalDebt | null>;
   findByClientId(clientId: string): Promise<ExternalDebt[]>;
   save(externalDebt: ExternalDebt): Promise<void>;
+  delete(id: string): Promise<void>;
 }
