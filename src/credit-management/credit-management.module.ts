@@ -15,8 +15,16 @@ import { LoanChargeRepository } from './infrastructure/persistence/loan-charge.r
 import { PenaltyPolicyRepository } from './infrastructure/persistence/penalty-policy.repository';
 import { LateFeeRepository } from './infrastructure/persistence/late-fee.repository';
 import { LoanHistoryRepository } from './infrastructure/persistence/loan-history.repository';
+import { GetLoanUseCase } from './application/use-cases/get-loan.use-case';
+import { ListLoansByClientUseCase } from './application/use-cases/list-loans-by-client.use-case';
+import { ListLoansByStatusUseCase } from './application/use-cases/list-loans-by-status.use-case';
+import { GetInstallmentUseCase } from './application/use-cases/get-installment.use-case';
+import { ListInstallmentsByLoanUseCase } from './application/use-cases/list-installments-by-loan.use-case';
+import { LoansController } from './presentation/loans.controller';
+import { InstallmentsController } from './presentation/installments.controller';
 
 @Module({
+  controllers: [LoansController, InstallmentsController],
   providers: [
     { provide: LOAN_REPOSITORY, useClass: LoanRepository },
     { provide: LOAN_REFINANCE_REPOSITORY, useClass: LoanRefinanceRepository },
@@ -25,6 +33,11 @@ import { LoanHistoryRepository } from './infrastructure/persistence/loan-history
     { provide: PENALTY_POLICY_REPOSITORY, useClass: PenaltyPolicyRepository },
     { provide: LATE_FEE_REPOSITORY, useClass: LateFeeRepository },
     { provide: LOAN_HISTORY_REPOSITORY, useClass: LoanHistoryRepository },
+    GetLoanUseCase,
+    ListLoansByClientUseCase,
+    ListLoansByStatusUseCase,
+    GetInstallmentUseCase,
+    ListInstallmentsByLoanUseCase,
   ],
   exports: [
     LOAN_REPOSITORY,

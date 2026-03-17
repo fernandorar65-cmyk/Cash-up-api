@@ -13,8 +13,12 @@ import { CreditScoreHistoryRepository } from './infrastructure/persistence/credi
 import { ClientBackgroundCheckRepository } from './infrastructure/persistence/client-background-check.repository';
 import { ExternalDebtRepository } from './infrastructure/persistence/external-debt.repository';
 import { ClientCreditProfileRepository } from './infrastructure/persistence/client-credit-profile.repository';
+import { GetClientUseCase } from './application/use-cases/get-client.use-case';
+import { GetClientCreditProfileUseCase } from './application/use-cases/get-client-credit-profile.use-case';
+import { ClientsController } from './presentation/clients.controller';
 
 @Module({
+  controllers: [ClientsController],
   providers: [
     { provide: CLIENT_REPOSITORY, useClass: ClientRepository },
     {
@@ -34,6 +38,8 @@ import { ClientCreditProfileRepository } from './infrastructure/persistence/clie
       provide: CLIENT_CREDIT_PROFILE_REPOSITORY,
       useClass: ClientCreditProfileRepository,
     },
+    GetClientUseCase,
+    GetClientCreditProfileUseCase,
   ],
   exports: [
     CLIENT_REPOSITORY,
