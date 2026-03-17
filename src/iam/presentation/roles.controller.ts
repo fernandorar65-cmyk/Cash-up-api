@@ -1,4 +1,5 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { RoleName } from '../domain/enums/role-name.enum';
 import { GetRoleUseCase } from '../application/use-cases/get-role.use-case';
 import { ListRolesUseCase } from '../application/use-cases/list-roles.use-case';
 import { RolesGuard } from '../infrastructure/auth/roles.guard';
@@ -6,7 +7,7 @@ import { Roles } from '../infrastructure/auth/roles.decorator';
 
 @Controller('roles')
 @UseGuards(RolesGuard)
-@Roles('admin', 'analyst')
+@Roles(RoleName.ADMIN, RoleName.ANALYST)
 export class RolesController {
   constructor(
     private readonly getRoleUseCase: GetRoleUseCase,

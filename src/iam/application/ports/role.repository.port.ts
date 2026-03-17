@@ -4,6 +4,7 @@ export const ROLE_REPOSITORY = Symbol('RoleRepository');
 
 export interface RoleRepositoryPort {
   findById(id: string): Promise<Role | null>;
+  findByName(name: string): Promise<Role | null>;
   findAll(): Promise<Role[]>;
   save(role: Role): Promise<void>;
   delete(id: string): Promise<void>;

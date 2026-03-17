@@ -15,6 +15,10 @@ export class ClientRepository implements ClientRepositoryPort {
     return this.repo.findOne({ where: { id } });
   }
 
+  async findByUserId(userId: string): Promise<Client | null> {
+    return this.repo.findOne({ where: { userId } });
+  }
+
   async findByDocument(
     documentType: string,
     documentNumber: string,

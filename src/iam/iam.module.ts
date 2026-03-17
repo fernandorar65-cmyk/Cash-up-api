@@ -20,6 +20,7 @@ import { ListRolesUseCase } from './application/use-cases/list-roles.use-case';
 import { GetUserRolesUseCase } from './application/use-cases/get-user-roles.use-case';
 import { RegisterUseCase } from './application/use-cases/register.use-case';
 import { LoginUseCase } from './application/use-cases/login.use-case';
+import { CreateAnalystUseCase } from './application/use-cases/create-analyst.use-case';
 import { UsersController } from './presentation/users.controller';
 import { RolesController } from './presentation/roles.controller';
 import { AuthController } from './presentation/auth.controller';
@@ -55,6 +56,7 @@ import { RolesGuard } from './infrastructure/auth/roles.guard';
     GetUserRolesUseCase,
     RegisterUseCase,
     LoginUseCase,
+    CreateAnalystUseCase,
     JwtStrategy,
     JwtAuthGuard,
     RolesGuard,

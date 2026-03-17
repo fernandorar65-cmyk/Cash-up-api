@@ -15,6 +15,10 @@ export class Client {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  /** Usuario que completó este perfil (rol client). Uno a uno. */
+  @Column({ type: 'uuid', name: 'user_id', unique: true, nullable: true })
+  userId: string | null;
+
   @Column({ type: 'varchar', length: 50, name: 'document_type' })
   documentType: string;
 

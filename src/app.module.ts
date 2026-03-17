@@ -25,7 +25,7 @@ import { typeOrmEntities } from './entities-index';
         type: 'postgres',
         url: "postgresql://postgres:postgres@localhost:5432/cashup",
         entities: typeOrmEntities,
-        synchronize: false,
+        synchronize: true,
         logging: process.env.NODE_ENV === 'development',
       }),
     }),

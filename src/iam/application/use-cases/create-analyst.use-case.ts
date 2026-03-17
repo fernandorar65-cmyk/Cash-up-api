@@ -7,7 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../../domain/entities/user.entity';
 import { UserRole } from '../../domain/entities/user-role.entity';
 import { RoleName } from '../../domain/enums/role-name.enum';
-import type { RegisterInput, RegisterResult } from '../dto/register.dto';
+import type { CreateAnalystInput, CreateAnalystResult } from '../dto/create-analyst.dto';
 import { USER_REPOSITORY } from '../ports/user.repository.port';
 import { ROLE_REPOSITORY } from '../ports/role.repository.port';
 import { USER_ROLE_REPOSITORY } from '../ports/user-role.repository.port';
@@ -16,17 +16,22 @@ import type { RoleRepositoryPort } from '../ports/role.repository.port';
 import type { UserRoleRepositoryPort } from '../ports/user-role.repository.port';
 
 @Injectable()
-export class RegisterUseCase {
+export class CreateAnalystUseCase {
   constructor(
     @Inject(USER_REPOSITORY) private readonly userRepo: UserRepositoryPort,
     @Inject(ROLE_REPOSITORY) private readonly roleRepo: RoleRepositoryPort,
     @Inject(USER_ROLE_REPOSITORY) private readonly userRoleRepo: UserRoleRepositoryPort,
   ) {}
 
-  async execute(input: RegisterInput): Promise<RegisterResult> {
+  async execute(input: CreateAnalystInput): Promise<CreateAnalystResult> {
     const existing = await this.userRepo.findByEmail(input.email);
     if (existing) {
       throw new ConflictException('Ya existe un usuario con ese email');
+    }
+
+    const analystRole = await this.roleRepo.findByName(RoleName.ANALYST);
+    if (!analystRole) {
+      throw new ConflictException(`Rol "${RoleName.ANALYST}" no existe en el sistema`);
     }
 
     const passwordHash = await bcrypt.hash(input.password, 10);
@@ -37,14 +42,11 @@ export class RegisterUseCase {
     user.isActive = true;
     await this.userRepo.save(user);
 
-    const clientRole = await this.roleRepo.findByName(RoleName.CLIENT);
-    if (clientRole) {
-      const userRole = new UserRole();
-      userRole.userId = user.id;
-      userRole.roleId = clientRole.id;
-      userRole.assignedAt = new Date();
-      await this.userRoleRepo.save(userRole);
-    }
+    const userRole = new UserRole();
+    userRole.userId = user.id;
+    userRole.roleId = analystRole.id;
+    userRole.assignedAt = new Date();
+    await this.userRoleRepo.save(userRole);
 
     return {
       id: user.id,

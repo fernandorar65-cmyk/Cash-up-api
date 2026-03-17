@@ -15,6 +15,10 @@ export class RoleRepository implements RoleRepositoryPort {
     return this.repo.findOne({ where: { id } });
   }
 
+  async findByName(name: string): Promise<Role | null> {
+    return this.repo.findOne({ where: { name } });
+  }
+
   async findAll(): Promise<Role[]> {
     return this.repo.find({ order: { name: 'ASC' } });
   }

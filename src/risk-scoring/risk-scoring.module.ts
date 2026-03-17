@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { IamModule } from '../iam/iam.module';
 import { Client } from './domain/entities/client.entity';
 import { CreditEvaluation } from './domain/entities/credit-evaluation.entity';
 import { CreditScoreHistory } from './domain/entities/credit-score-history.entity';
@@ -22,10 +23,12 @@ import { ExternalDebtRepository } from './infrastructure/persistence/external-de
 import { ClientCreditProfileRepository } from './infrastructure/persistence/client-credit-profile.repository';
 import { GetClientUseCase } from './application/use-cases/get-client.use-case';
 import { GetClientCreditProfileUseCase } from './application/use-cases/get-client-credit-profile.use-case';
+import { CreateClientUseCase } from './application/use-cases/create-client.use-case';
 import { ClientsController } from './presentation/clients.controller';
 
 @Module({
   imports: [
+    IamModule,
     TypeOrmModule.forFeature([
       Client,
       CreditEvaluation,
@@ -57,6 +60,7 @@ import { ClientsController } from './presentation/clients.controller';
     },
     GetClientUseCase,
     GetClientCreditProfileUseCase,
+    CreateClientUseCase,
   ],
   exports: [
     CLIENT_REPOSITORY,
