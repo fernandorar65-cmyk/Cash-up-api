@@ -1,25 +1,41 @@
 /**
  * Entidad de dominio: Préstamo.
- * Credit Management
+ * Credit Management. Mapeo TypeORM → tabla `loans`.
  */
-export type LoanStatus =
-  | 'pending_approval'
-  | 'approved'
-  | 'rejected'
-  | 'disbursed'
-  | 'refinanced'
-  | 'closed';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+@Entity('loans')
 export class Loan {
-  constructor(
-    public readonly id: string,
-    public readonly clientId: string,
-    public readonly amount: number,
-    public readonly interestRate: number,
-    public readonly termMonths: number,
-    public readonly interestType: string,
-    public readonly status: LoanStatus,
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date,
-  ) {}
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ type: 'uuid', name: 'client_id' })
+  clientId: string;
+
+  @Column({ type: 'decimal', precision: 15, scale: 2 })
+  amount: number;
+
+  @Column({ type: 'decimal', precision: 5, scale: 2, name: 'interest_rate' })
+  interestRate: number;
+
+  @Column({ type: 'int', name: 'term_months' })
+  termMonths: number;
+
+  @Column({ type: 'varchar', length: 50, name: 'interest_type' })
+  interestType: string;
+
+  @Column({ type: 'varchar', length: 30 })
+  status: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }

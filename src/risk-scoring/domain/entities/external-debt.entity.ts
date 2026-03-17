@@ -1,14 +1,26 @@
 /**
- * Entidad de dominio: Deuda externa para nivel de endeudamiento.
- * Risk & Scoring
+ * Entidad de dominio: Deuda externa.
+ * Risk & Scoring. Mapeo TypeORM → tabla `external_debts`.
  */
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+@Entity('external_debts')
 export class ExternalDebt {
-  constructor(
-    public readonly id: string,
-    public readonly clientId: string,
-    public readonly creditorName: string,
-    public readonly amount: number,
-    public readonly monthlyPayment: number,
-    public readonly recordedAt: Date,
-  ) {}
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ type: 'uuid', name: 'client_id' })
+  clientId: string;
+
+  @Column({ type: 'varchar', length: 255, name: 'creditor_name' })
+  creditorName: string;
+
+  @Column({ type: 'decimal', precision: 15, scale: 2 })
+  amount: number;
+
+  @Column({ type: 'decimal', precision: 15, scale: 2, name: 'monthly_payment' })
+  monthlyPayment: number;
+
+  @Column({ type: 'timestamp', name: 'recorded_at' })
+  recordedAt: Date;
 }

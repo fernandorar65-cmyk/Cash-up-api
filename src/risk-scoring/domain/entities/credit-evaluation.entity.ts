@@ -1,15 +1,33 @@
 /**
- * Entidad de dominio: Evaluación de riesgo (puntaje, aprobado/rechazado, factores).
- * Risk & Scoring
+ * Entidad de dominio: Evaluación de riesgo.
+ * Risk & Scoring. Mapeo TypeORM → tabla `credit_evaluations`.
  */
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+} from 'typeorm';
+
+@Entity('credit_evaluations')
 export class CreditEvaluation {
-  constructor(
-    public readonly id: string,
-    public readonly clientId: string,
-    public readonly score: number,
-    public readonly approved: boolean,
-    public readonly factors: Record<string, unknown>,
-    public readonly evaluatedAt: Date,
-    public readonly evaluatedByUserId: string | null,
-  ) {}
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ type: 'uuid', name: 'client_id' })
+  clientId: string;
+
+  @Column({ type: 'decimal', precision: 5, scale: 2 })
+  score: number;
+
+  @Column({ type: 'boolean' })
+  approved: boolean;
+
+  @Column({ type: 'jsonb' })
+  factors: Record<string, unknown>;
+
+  @Column({ type: 'timestamp', name: 'evaluated_at' })
+  evaluatedAt: Date;
+
+  @Column({ type: 'uuid', name: 'evaluated_by_user_id', nullable: true })
+  evaluatedByUserId: string | null;
 }

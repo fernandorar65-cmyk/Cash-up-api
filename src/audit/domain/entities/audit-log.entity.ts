@@ -1,18 +1,38 @@
 /**
  * Entidad de dominio: Registro de auditoría.
- * Audit
+ * Audit. Mapeo TypeORM → tabla `audit_logs`.
  */
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+@Entity('audit_logs')
 export class AuditLog {
-  constructor(
-    public readonly id: string,
-    public readonly action: string,
-    public readonly entityType: string,
-    public readonly entityId: string,
-    public readonly oldValues: Record<string, unknown> | null,
-    public readonly newValues: Record<string, unknown> | null,
-    public readonly userId: string | null,
-    public readonly ip: string | null,
-    public readonly userAgent: string | null,
-    public readonly createdAt: Date,
-  ) {}
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  action: string;
+
+  @Column({ type: 'varchar', length: 100, name: 'entity_type' })
+  entityType: string;
+
+  @Column({ type: 'uuid', name: 'entity_id' })
+  entityId: string;
+
+  @Column({ type: 'jsonb', name: 'old_values', nullable: true })
+  oldValues: Record<string, unknown> | null;
+
+  @Column({ type: 'jsonb', name: 'new_values', nullable: true })
+  newValues: Record<string, unknown> | null;
+
+  @Column({ type: 'uuid', name: 'user_id', nullable: true })
+  userId: string | null;
+
+  @Column({ type: 'varchar', length: 45, nullable: true })
+  ip: string | null;
+
+  @Column({ type: 'text', name: 'user_agent', nullable: true })
+  userAgent: string | null;
+
+  @Column({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 }
