@@ -1,15 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Public } from './iam/infrastructure/auth/public.decorator';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Public()
   @Get()
   getHello(): string {
     return this.appService.getHello();
   }
 
+  @Public()
   @Get('mensaje1')
   getMensaje1(): object {
     return {
@@ -19,6 +22,7 @@ export class AppController {
     };
   }
 
+  @Public()
   @Get('mensaje2')
   getMensaje2(): object {
     return {
