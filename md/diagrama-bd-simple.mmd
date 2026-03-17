@@ -1,0 +1,39 @@
+%% Diagrama ER simplificado - CashUp API
+%% Copiar y pegar en https://mermaid.live/ para ver el gráfico
+
+erDiagram
+    users ||--o{ user_roles : ""
+    roles ||--o{ user_roles : ""
+    clients ||--o{ loans : ""
+    clients ||--o{ payments : ""
+    clients ||--o{ collection_actions : ""
+    clients ||--o{ credit_evaluations : ""
+    clients ||--|| client_credit_profiles : ""
+    loans ||--o{ installments : ""
+    loans ||--o{ payments : ""
+    loans ||--o{ loan_history : ""
+    loans }o--o{ loan_refinances : ""
+    penalty_policies ||--o{ late_fees : ""
+    installments ||--o{ late_fees : ""
+    installments ||--o{ payment_applications : ""
+    payments ||--o{ payment_applications : ""
+    users ||--o{ loan_history : ""
+    users ||--o{ collection_actions : ""
+    users ||--o{ audit_logs : ""
+
+    users { uuid id string email string name }
+    roles { uuid id string name }
+    user_roles { uuid id uuid user_id uuid role_id }
+    clients { uuid id string name string document_number decimal monthly_income }
+    loans { uuid id uuid client_id decimal amount string status }
+    installments { uuid id uuid loan_id int number decimal total_amount string status }
+    penalty_policies { uuid id string name decimal penalty_percentage }
+    late_fees { uuid id uuid installment_id decimal amount }
+    loan_refinances { uuid id uuid original_loan_id uuid new_loan_id }
+    loan_history { uuid id uuid loan_id uuid user_id string action }
+    payments { uuid id uuid client_id uuid loan_id decimal amount string method }
+    payment_applications { uuid id uuid payment_id uuid installment_id decimal principal_amount }
+    credit_evaluations { uuid id uuid client_id decimal score boolean approved }
+    client_credit_profiles { uuid id uuid client_id decimal current_score string risk_level }
+    collection_actions { uuid id uuid client_id uuid loan_id string action_type }
+    audit_logs { uuid id string action string entity_type uuid entity_id }

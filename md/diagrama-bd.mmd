@@ -1,0 +1,209 @@
+%% Diagrama ER - CashUp API
+%% Ver en: https://mermaid.live/ o en VS Code con extensión Mermaid
+
+erDiagram
+    users ||--o{ user_roles : "tiene"
+    roles ||--o{ user_roles : "asignado a"
+    users {
+        uuid id PK
+        string email
+        string name
+        string password_hash
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+    roles {
+        uuid id PK
+        string name
+        text description
+        timestamp created_at
+        timestamp updated_at
+    }
+    user_roles {
+        uuid id PK
+        uuid user_id FK
+        uuid role_id FK
+        timestamp assigned_at
+    }
+
+    clients ||--o{ loans : "solicita"
+    clients ||--o{ credit_evaluations : "evaluado"
+    clients ||--o{ credit_score_history : "historial"
+    clients ||--o{ client_background_checks : "verificado"
+    clients ||--o{ external_debts : "deudas"
+    clients ||--|| client_credit_profiles : "perfil"
+    clients ||--o{ payments : "realiza"
+    clients ||--o{ collection_actions : "gestionado"
+    clients {
+        uuid id PK
+        string document_type
+        string document_number
+        string name
+        string email
+        string phone
+        decimal monthly_income
+        timestamp created_at
+        timestamp updated_at
+    }
+    credit_evaluations {
+        uuid id PK
+        uuid client_id FK
+        decimal score
+        boolean approved
+        jsonb factors
+        timestamp evaluated_at
+        uuid evaluated_by_user_id FK
+    }
+    credit_score_history {
+        uuid id PK
+        uuid client_id FK
+        decimal score
+        timestamp recorded_at
+    }
+    client_background_checks {
+        uuid id PK
+        uuid client_id FK
+        string type
+        string result
+        text details
+        timestamp checked_at
+    }
+    external_debts {
+        uuid id PK
+        uuid client_id FK
+        string creditor_name
+        decimal amount
+        decimal monthly_payment
+        timestamp recorded_at
+    }
+    client_credit_profiles {
+        uuid id PK
+        uuid client_id FK
+        decimal current_score
+        string risk_level
+        decimal total_debt
+        int on_time_payments_count
+        int late_payments_count
+        timestamp updated_at
+    }
+
+    penalty_policies ||--o{ late_fees : "aplica"
+    penalty_policies {
+        uuid id PK
+        string name
+        decimal penalty_percentage
+        int grace_days
+        string calculation_type
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+    loans ||--o{ installments : "cuotas"
+    loans ||--o{ loan_charges : "cargos"
+    loans ||--o{ loan_history : "historial"
+    loans ||--o{ payments : "pagos"
+    loans ||--o{ collection_actions : "cobranza"
+    loans }o--o{ loan_refinances : "refinancia"
+    users ||--o{ loan_history : "registra"
+    users ||--o{ collection_actions : "ejecuta"
+    users ||--o{ audit_logs : "auditado"
+    users ||--o{ credit_evaluations : "evalúa"
+    loans {
+        uuid id PK
+        uuid client_id FK
+        decimal amount
+        decimal interest_rate
+        int term_months
+        string interest_type
+        string status
+        timestamp created_at
+        timestamp updated_at
+    }
+    loan_refinances {
+        uuid id PK
+        uuid original_loan_id FK
+        uuid new_loan_id FK
+        timestamp refinanced_at
+    }
+    installments ||--o{ late_fees : "mora"
+    installments ||--o{ payment_applications : "aplicado"
+    installments {
+        uuid id PK
+        uuid loan_id FK
+        int number
+        date due_date
+        decimal principal_amount
+        decimal interest_amount
+        decimal total_amount
+        string status
+        timestamp paid_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    loan_charges {
+        uuid id PK
+        uuid loan_id FK
+        string type
+        decimal amount
+        text description
+        timestamp created_at
+    }
+    late_fees {
+        uuid id PK
+        uuid installment_id FK
+        decimal amount
+        timestamp applied_at
+        uuid penalty_policy_id FK
+    }
+    loan_history {
+        uuid id PK
+        uuid loan_id FK
+        string action
+        jsonb previous_state
+        jsonb new_state
+        uuid user_id FK
+        timestamp created_at
+    }
+    payments ||--o{ payment_applications : "distribución"
+    payments {
+        uuid id PK
+        uuid client_id FK
+        uuid loan_id FK
+        decimal amount
+        string method
+        string reference
+        timestamp paid_at
+        timestamp created_at
+    }
+    payment_applications {
+        uuid id PK
+        uuid payment_id FK
+        uuid installment_id FK
+        decimal principal_amount
+        decimal interest_amount
+        decimal late_fee_amount
+        timestamp applied_at
+    }
+    collection_actions {
+        uuid id PK
+        uuid client_id FK
+        uuid loan_id FK
+        string action_type
+        string result
+        text notes
+        timestamp performed_at
+        uuid performed_by_user_id FK
+    }
+    audit_logs {
+        uuid id PK
+        string action
+        string entity_type
+        uuid entity_id
+        jsonb old_values
+        jsonb new_values
+        uuid user_id FK
+        string ip
+        text user_agent
+        timestamp created_at
+    }
