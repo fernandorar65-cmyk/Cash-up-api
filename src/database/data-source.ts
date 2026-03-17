@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { InitialSchema1737120000000 } from './migrations/1737120000000-InitialSchema';
+import { SeedTestData1737200000000 } from './migrations/1737200000000-SeedTestData';
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ export const AppDataSource = new DataSource({
         database: 'cashup',
       }),
   entities: [],
-  migrations: [InitialSchema1737120000000],
+  migrations: [InitialSchema1737120000000, SeedTestData1737200000000],
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',
 });
