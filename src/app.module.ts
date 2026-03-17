@@ -21,9 +21,9 @@ import { typeOrmEntities } from './entities-index';
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'postgres',
-        url: process.env.DATABASE_URL,
+        url: "postgresql://postgres:postgres@localhost:5432/cashup",
         entities: typeOrmEntities,
-        synchronize: false,
+        synchronize: true,
         logging: process.env.NODE_ENV === 'development',
       }),
     }),
