@@ -3,7 +3,6 @@ import {
   Injectable,
   ConflictException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { User } from '../../domain/entities/user.entity';
 import { UserRole } from '../../domain/entities/user-role.entity';
 import { RoleName } from '../../domain/enums/role-name.enum';
@@ -14,6 +13,8 @@ import { USER_ROLE_REPOSITORY } from '../ports/user-role.repository.port';
 import type { UserRepositoryPort } from '../ports/user.repository.port';
 import type { RoleRepositoryPort } from '../ports/role.repository.port';
 import type { UserRoleRepositoryPort } from '../ports/user-role.repository.port';
+import { PASSWORD_HASHER } from '../ports/password-hasher.port';
+import type { PasswordHasherPort } from '../ports/password-hasher.port';
 
 @Injectable()
 export class RegisterUseCase {
@@ -21,6 +22,7 @@ export class RegisterUseCase {
     @Inject(USER_REPOSITORY) private readonly userRepo: UserRepositoryPort,
     @Inject(ROLE_REPOSITORY) private readonly roleRepo: RoleRepositoryPort,
     @Inject(USER_ROLE_REPOSITORY) private readonly userRoleRepo: UserRoleRepositoryPort,
+    @Inject(PASSWORD_HASHER) private readonly passwordHasher: PasswordHasherPort,
   ) {}
 
   async execute(input: RegisterInput): Promise<RegisterResult> {
@@ -29,7 +31,7 @@ export class RegisterUseCase {
       throw new ConflictException('Ya existe un usuario con ese email');
     }
 
-    const passwordHash = await bcrypt.hash(input.password, 10);
+    const passwordHash = await this.passwordHasher.hash(input.password);
     const user = new User();
     user.email = input.email;
     user.name = input.name;

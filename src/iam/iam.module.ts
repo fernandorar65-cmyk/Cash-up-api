@@ -13,6 +13,7 @@ import {
   USER_REPOSITORY,
   ROLE_REPOSITORY,
   USER_ROLE_REPOSITORY,
+  PASSWORD_HASHER,
 } from './application/ports';
 import { GetUserUseCase } from './application/use-cases/get-user.use-case';
 import { GetRoleUseCase } from './application/use-cases/get-role.use-case';
@@ -27,6 +28,7 @@ import { AuthController } from './presentation/auth.controller';
 import { JwtStrategy } from './infrastructure/auth/jwt.strategy';
 import { JwtAuthGuard } from './infrastructure/auth/jwt-auth.guard';
 import { RolesGuard } from './infrastructure/auth/roles.guard';
+import { BcryptPasswordHasher } from './infrastructure/crypto/bcrypt-password-hasher';
 
 @Module({
   imports: [
@@ -50,6 +52,7 @@ import { RolesGuard } from './infrastructure/auth/roles.guard';
     { provide: USER_REPOSITORY, useClass: UserRepository },
     { provide: ROLE_REPOSITORY, useClass: RoleRepository },
     { provide: USER_ROLE_REPOSITORY, useClass: UserRoleRepository },
+    { provide: PASSWORD_HASHER, useClass: BcryptPasswordHasher },
     GetUserUseCase,
     GetRoleUseCase,
     ListRolesUseCase,
