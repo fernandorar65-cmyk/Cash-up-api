@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -12,12 +12,10 @@ import { GetUserUseCase } from '../../application/use-cases/get-user.use-case';
 import { GetUserRolesUseCase } from '../../application/use-cases/get-user-roles.use-case';
 import { CreateAnalystUseCase } from '../../application/use-cases/create-analyst.use-case';
 import { CreateAnalystHttpDto } from '../dtos/request/create-analyst.http.dto';
-import { HttpExceptionFilter } from '../../../../common/filters/http-exception.filter';
 
 @ApiTags('users')
 @ApiBearerAuth('access-token')
 @Controller('users')
-@UseFilters(HttpExceptionFilter)
 @UseGuards(RolesGuard)
 @Roles(RoleName.ADMIN, RoleName.ANALYST)
 export class UsersController {

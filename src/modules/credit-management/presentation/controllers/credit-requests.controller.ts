@@ -5,7 +5,6 @@ import {
   Param,
   Patch,
   Post,
-  UseFilters,
   UseGuards,
   Query,
 } from '@nestjs/common';
@@ -35,13 +34,11 @@ import { MarkCreditRequestUnderReviewUseCase } from '../../application/use-cases
 import { CreateCreditRequestHttpDto } from '../dtos/request/create-credit-request.http.dto';
 import { ApproveCreditRequestHttpDto } from '../dtos/request/approve-credit-request.http.dto';
 import { RejectCreditRequestHttpDto } from '../dtos/request/reject-credit-request.http.dto';
-import { HttpExceptionFilter } from '../../../../common/filters/http-exception.filter';
 import { CreditRequestStatus } from '../../domain/enums/credit-request-status.enum';
 
 @ApiTags('credit-requests')
 @ApiBearerAuth('access-token')
 @Controller('credit-requests')
-@UseFilters(HttpExceptionFilter)
 export class CreditRequestsController {
   constructor(
     private readonly createCreditRequestUseCase: CreateCreditRequestUseCase,

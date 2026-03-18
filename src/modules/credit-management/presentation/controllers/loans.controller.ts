@@ -1,5 +1,4 @@
-import { Controller, Get, Param, Query, UseFilters, UseGuards } from '@nestjs/common';
-import { HttpExceptionFilter } from '../../../../common/filters/http-exception.filter';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 
 import { GetLoanUseCase } from '../../application/use-cases/get-loan.use-case';
 import { ListLoansByClientUseCase } from '../../application/use-cases/list-loans-by-client.use-case';
@@ -13,7 +12,6 @@ import { CurrentUser } from '../../../iam/presentation/guards/current-user.decor
 import type { RequestUser } from '../../../iam/presentation/guards/jwt.strategy';
 
 @Controller('loans')
-@UseFilters(HttpExceptionFilter)
 export class LoansController {
   constructor(
     private readonly getLoanUseCase: GetLoanUseCase,

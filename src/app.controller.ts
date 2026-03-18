@@ -1,8 +1,6 @@
-import { Controller, UseFilters } from '@nestjs/common';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { Controller } from '@nestjs/common';
 
 @Controller()
-@UseFilters(HttpExceptionFilter)
 export class AppController {
   // Sin endpoints en el root controller.
 }

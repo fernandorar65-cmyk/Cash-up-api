@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseFilters } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { Public } from '../guards/public.decorator';
 import { LoginUseCase } from '../../application/use-cases/login.use-case';
 import { RegisterUseCase } from '../../application/use-cases/register.use-case';
@@ -6,10 +6,8 @@ import { RefreshAccessTokenUseCase } from '../../application/use-cases/refresh-a
 import { LoginHttpDto } from '../dtos/request/login.http.dto';
 import { RegisterHttpDto } from '../dtos/request/register.http.dto';
 import { RefreshAccessTokenHttpDto } from '../dtos/request/refresh-access-token.http.dto';
-import { HttpExceptionFilter } from '../../../../common/filters/http-exception.filter';
 
 @Controller('auth')
-@UseFilters(HttpExceptionFilter)
 export class AuthController {
   constructor(
     private readonly registerUseCase: RegisterUseCase,
