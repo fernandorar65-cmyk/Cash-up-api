@@ -1,7 +1,3 @@
-/**
- * Genera datos de evaluación simulados (buros, antecedentes, etc.).
- * outcome: 1 = positivo, 2 = negativo, undefined = aleatorio.
- */
 export type SimulatedEvaluationOutcome = 1 | 2;
 
 export interface SimulatedEvaluationData {
