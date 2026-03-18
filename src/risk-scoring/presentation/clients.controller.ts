@@ -14,11 +14,11 @@ import {
   ApiBearerAuth,
   ApiParam,
 } from '@nestjs/swagger';
-import { RoleName } from '../../iam/domain/enums/role-name.enum';
-import { CurrentUser } from '../../iam/infrastructure/auth/current-user.decorator';
-import type { RequestUser } from '../../iam/infrastructure/auth/jwt.strategy';
-import { RolesGuard } from '../../iam/infrastructure/auth/roles.guard';
-import { Roles } from '../../iam/infrastructure/auth/roles.decorator';
+import { RoleName } from '../../modules/iam/domain/enums/role-name.enum';
+import { CurrentUser } from '../../modules/iam/presentation/guards/current-user.decorator';
+import type { RequestUser } from '../../modules/iam/presentation/guards/jwt.strategy';
+import { RolesGuard } from '../../modules/iam/presentation/guards/roles.guard';
+import { Roles } from '../../modules/iam/presentation/guards/roles.decorator';
 import { GetClientUseCase } from '../application/use-cases/get-client.use-case';
 import { GetClientCreditProfileUseCase } from '../application/use-cases/get-client-credit-profile.use-case';
 import { CreateClientUseCase } from '../application/use-cases/create-client.use-case';

@@ -6,21 +6,20 @@ import {
 } from '@nestjs/common';
 import { CLIENT_REPOSITORY } from '../../../risk-scoring/application/ports/client.repository.port';
 import type { ClientRepositoryPort } from '../../../risk-scoring/application/ports/client.repository.port';
-import { USER_ROLE_REPOSITORY } from '../../../iam/application/ports/user-role.repository.port';
-import type { UserRoleRepositoryPort } from '../../../iam/application/ports/user-role.repository.port';
-import { ROLE_REPOSITORY } from '../../../iam/application/ports/role.repository.port';
-import type { RoleRepositoryPort } from '../../../iam/application/ports/role.repository.port';
+import { IAM_TOKENS } from '../../../modules/iam/application/ports/tokens';
+import type { IUserRoleRepository } from '../../../modules/iam/domain/repositories/user-role.repository';
+import type { IRoleRepository } from '../../../modules/iam/domain/repositories/role.repository';
 import { CREDIT_REQUEST_REPOSITORY } from '../ports/credit-request.repository.port';
 import type { CreditRequestRepositoryPort } from '../ports/credit-request.repository.port';
-import { RoleName } from '../../../iam/domain/enums/role-name.enum';
+import { RoleName } from '../../../modules/iam/domain/enums/role-name.enum';
 
 @Injectable()
 export class GetCreditRequestUseCase {
   constructor(
     @Inject(CLIENT_REPOSITORY) private readonly clientRepo: ClientRepositoryPort,
-    @Inject(USER_ROLE_REPOSITORY)
-    private readonly userRoleRepo: UserRoleRepositoryPort,
-    @Inject(ROLE_REPOSITORY) private readonly roleRepo: RoleRepositoryPort,
+    @Inject(IAM_TOKENS.USER_ROLE_REPOSITORY)
+    private readonly userRoleRepo: IUserRoleRepository,
+    @Inject(IAM_TOKENS.ROLE_REPOSITORY) private readonly roleRepo: IRoleRepository,
     @Inject(CREDIT_REQUEST_REPOSITORY)
     private readonly creditRequestRepo: CreditRequestRepositoryPort,
   ) {}

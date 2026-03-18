@@ -2,9 +2,9 @@
  * Índice de entidades de dominio para registro en TypeORM.
  * Una sola fuente: las entidades de cada contexto.
  */
-import { User } from './iam/domain/entities/user.entity';
-import { Role } from './iam/domain/entities/role.entity';
-import { UserRole } from './iam/domain/entities/user-role.entity';
+import { UserOrmEntity } from './modules/iam/infrastructure/persistence/typeorm/entities/user.orm-entity';
+import { RoleOrmEntity } from './modules/iam/infrastructure/persistence/typeorm/entities/role.orm-entity';
+import { UserRoleOrmEntity } from './modules/iam/infrastructure/persistence/typeorm/entities/user-role.orm-entity';
 import { Client } from './risk-scoring/domain/entities/client.entity';
 import { CreditEvaluation } from './risk-scoring/domain/entities/credit-evaluation.entity';
 import { CreditScoreHistory } from './risk-scoring/domain/entities/credit-score-history.entity';
@@ -25,9 +25,9 @@ import { CollectionAction } from './collection/domain/entities/collection-action
 import { AuditLog } from './audit/domain/entities/audit-log.entity';
 
 export const typeOrmEntities = [
-  User,
-  Role,
-  UserRole,
+  UserOrmEntity,
+  RoleOrmEntity,
+  UserRoleOrmEntity,
   Client,
   CreditEvaluation,
   CreditScoreHistory,

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { IamModule } from '../iam/iam.module';
+import { IamModule } from '../modules/iam/iam.module';
 import { RiskScoringModule } from '../risk-scoring/risk-scoring.module';
 import { Loan } from './domain/entities/loan.entity';
 import { CreditRequest } from './domain/entities/credit-request.entity';
