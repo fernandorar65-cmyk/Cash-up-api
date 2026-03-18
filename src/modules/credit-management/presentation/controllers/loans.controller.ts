@@ -1,4 +1,5 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseFilters } from '@nestjs/common';
+import { HttpExceptionFilter } from '../../../../common/filters/http-exception.filter';
 
 import { GetLoanUseCase } from '../../application/use-cases/get-loan.use-case';
 import { ListLoansByClientUseCase } from '../../application/use-cases/list-loans-by-client.use-case';
@@ -6,6 +7,7 @@ import { ListLoansByStatusUseCase } from '../../application/use-cases/list-loans
 import { ListInstallmentsByLoanUseCase } from '../../application/use-cases/list-installments-by-loan.use-case';
 
 @Controller('loans')
+@UseFilters(HttpExceptionFilter)
 export class LoansController {
   constructor(
     private readonly getLoanUseCase: GetLoanUseCase,

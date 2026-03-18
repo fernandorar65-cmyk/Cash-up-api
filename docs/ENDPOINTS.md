@@ -1,3 +1,69 @@
+# Endpoints disponibles (Cash Up API)
+
+Base URL local: `http://localhost:4000`
+
+Swagger UI: `GET /docs`
+
+## Salud / prueba
+
+- **GET /**: Público (`AppController.getHello`)
+- **GET /mensaje1**: Público
+- **GET /mensaje2**: Público
+
+## IAM
+
+### Auth (`/auth`) (público)
+
+- **POST /auth/register**: Registrar usuario (rol CLIENT por defecto si existe)
+- **POST /auth/login**: Login (JWT)
+
+### Users (`/users`) (requiere JWT + RolesGuard)
+
+Requiere rol **ADMIN** o **ANALYST** en el controller.
+
+- **POST /users/analysts**: Solo **ADMIN** (crear analista)
+- **GET /users/:id**: Obtener usuario por id
+- **GET /users/:id/roles**: Obtener roles del usuario
+
+### Roles (`/roles`) (requiere JWT + RolesGuard)
+
+Requiere rol **ADMIN** o **ANALYST**.
+
+- **GET /roles**: Listar roles
+- **GET /roles/:id**: Obtener rol por id
+
+## Risk Scoring (`/clients`) (requiere JWT + RolesGuard)
+
+Requiere rol **CLIENT** para crear perfil.
+
+- **POST /clients**: Crear perfil de cliente + evaluación inicial simulada
+- **POST /clients/:evaluationOutcome**: Crear perfil + evaluación simulada forzada
+  - `evaluationOutcome=1` (positivo) o `2` (negativo)
+- **GET /clients/:id**: Obtener cliente por id
+- **GET /clients/:id/credit-profile**: Obtener perfil de crédito por clientId
+
+## Credit Management
+
+### Credit Requests (`/credit-requests`)
+
+- **GET /credit-requests/pending**: Requiere rol **ANALYST** o **ADMIN**
+- **GET /credit-requests/my**: Requiere rol **CLIENT**
+- **POST /credit-requests**: Requiere rol **CLIENT** (crear solicitud)
+- **GET /credit-requests/:id**: Requiere JWT (el caso de uso valida dueño o staff)
+- **PATCH /credit-requests/:id/reject**: Requiere rol **ANALYST** o **ADMIN**
+- **PATCH /credit-requests/:id/approve**: Requiere rol **ANALYST** o **ADMIN**
+
+### Loans (`/loans`)
+
+- **GET /loans?clientId=...**: Listar préstamos por clientId
+- **GET /loans?status=...**: Listar préstamos por status
+- **GET /loans/:id**: Obtener préstamo por id
+- **GET /loans/:loanId/installments**: Listar cuotas de un préstamo
+
+### Installments (`/installments`)
+
+- **GET /installments/:id**: Obtener cuota por id
+
 # Endpoints actuales (`cash-up-api`)
 
 ## Base URL

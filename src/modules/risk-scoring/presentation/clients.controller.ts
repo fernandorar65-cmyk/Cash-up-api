@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -24,10 +25,12 @@ import { GetClientCreditProfileUseCase } from '../application/use-cases/get-clie
 import { CreateClientUseCase } from '../application/use-cases/create-client.use-case';
 import { RunInitialCreditEvaluationUseCase } from '../application/use-cases/run-initial-credit-evaluation.use-case';
 import { CreateClientDto } from './dto/create-client.dto';
+import { HttpExceptionFilter } from '../../../common/filters/http-exception.filter';
 
 @ApiTags('clients')
 @ApiBearerAuth('access-token')
 @Controller('clients')
+@UseFilters(HttpExceptionFilter)
 export class ClientsController {
   constructor(
     private readonly getClientUseCase: GetClientUseCase,

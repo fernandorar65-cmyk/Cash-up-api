@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -30,10 +31,12 @@ import { ApproveCreditRequestUseCase } from '../../application/use-cases/approve
 import { CreateCreditRequestHttpDto } from '../dtos/request/create-credit-request.http.dto';
 import { ApproveCreditRequestHttpDto } from '../dtos/request/approve-credit-request.http.dto';
 import { RejectCreditRequestHttpDto } from '../dtos/request/reject-credit-request.http.dto';
+import { HttpExceptionFilter } from '../../../../common/filters/http-exception.filter';
 
 @ApiTags('credit-requests')
 @ApiBearerAuth('access-token')
 @Controller('credit-requests')
+@UseFilters(HttpExceptionFilter)
 export class CreditRequestsController {
   constructor(
     private readonly createCreditRequestUseCase: CreateCreditRequestUseCase,
@@ -107,14 +110,8 @@ export class CreditRequestsController {
   @Patch(':id/approve')
   @UseGuards(RolesGuard)
   @Roles(RoleName.ANALYST, RoleName.ADMIN)
-  @ApiOperation({
-    summary: 'Aprobar: crea préstamo (ACTIVE) y cronograma de cuotas',
-  })
-  async approve(
-    @Param('id') id: string,
-    @Body() dto: ApproveCreditRequestHttpDto,
-    @CurrentUser() user: RequestUser,
-  ) {
+  @ApiOperation({summary: 'Aprobar: crea préstamo (ACTIVE) y cronograma de cuotas',})
+  async approve(@Param('id') id: string,@Body() dto: ApproveCreditRequestHttpDto,@CurrentUser() user: RequestUser) {
     return this.approveCreditRequestUseCase.execute({
       creditRequestId: id,
       analystUserId: user.userId,
