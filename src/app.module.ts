@@ -6,11 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { IamModule } from './modules/iam/iam.module';
 import { JwtAuthGuard } from './modules/iam/presentation/guards/jwt-auth.guard';
-import { CreditManagementModule } from './credit-management/credit-management.module';
-import { PaymentsModule } from './payments/payments.module';
-import { RiskScoringModule } from './risk-scoring/risk-scoring.module';
-import { CollectionModule } from './collection/collection.module';
-import { AuditModule } from './audit/audit.module';
+import { CreditManagementModule } from './modules/credit-management/credit-management.module';
+import { RiskScoringModule } from './modules/risk-scoring/risk-scoring.module';
 import configuration from './config/configuration';
 import { typeOrmEntities } from './entities-index';
 
@@ -25,15 +22,12 @@ import { typeOrmEntities } from './entities-index';
         type: 'postgres',
         url: "postgresql://postgres:postgres@localhost:5432/cashup",
         entities: typeOrmEntities,
-        synchronize: true,
+        synchronize: false,
       }),
     }),
     IamModule,
     CreditManagementModule,
-    PaymentsModule,
     RiskScoringModule,
-    CollectionModule,
-    AuditModule,
   ],
   controllers: [AppController],
   providers: [

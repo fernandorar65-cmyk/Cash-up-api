@@ -69,7 +69,15 @@ import { RolesGuard } from './presentation/guards/roles.guard';
     JwtAuthGuard,
     RolesGuard,
   ],
-  exports: [JwtModule, JwtAuthGuard, RolesGuard],
+  exports: [
+    JwtModule,
+    JwtAuthGuard,
+    RolesGuard,
+    IAM_TOKENS.USER_REPOSITORY,
+    IAM_TOKENS.ROLE_REPOSITORY,
+    IAM_TOKENS.USER_ROLE_REPOSITORY,
+    IAM_TOKENS.PASSWORD_HASHER,
+  ],
 })
 export class IamModule {}
 
