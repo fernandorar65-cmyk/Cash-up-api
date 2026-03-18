@@ -27,9 +27,7 @@ Arquitectura: organizado por bounded contexts en `src/modules/*` con separación
 
 ### Salud / prueba
 
-- **GET /**: Público
-- **GET /mensaje1**: Público
-- **GET /mensaje2**: Público
+*(Eliminados: endpoints de prueba del root)*
 
 ### IAM
 
@@ -37,6 +35,7 @@ Arquitectura: organizado por bounded contexts en `src/modules/*` con separación
 
 - **POST /auth/register**: Registrar usuario
 - **POST /auth/login**: Login (devuelve JWT)
+- **POST /auth/refresh**: Refrescar access token (acepta token expirado)
 
 #### Users (`/users`) (JWT + RolesGuard: ADMIN/ANALYST)
 

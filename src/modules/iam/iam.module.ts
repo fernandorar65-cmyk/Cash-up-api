@@ -20,6 +20,7 @@ import { RolesController } from './presentation/controllers/roles.controller';
 
 import { RegisterUseCase } from './application/use-cases/register.use-case';
 import { LoginUseCase } from './application/use-cases/login.use-case';
+import { RefreshAccessTokenUseCase } from './application/use-cases/refresh-access-token.use-case';
 import { CreateAnalystUseCase } from './application/use-cases/create-analyst.use-case';
 import { GetUserUseCase } from './application/use-cases/get-user.use-case';
 import { GetUserRolesUseCase } from './application/use-cases/get-user-roles.use-case';
@@ -60,6 +61,7 @@ import { RolesGuard } from './presentation/guards/roles.guard';
     { provide: IAM_TOKENS.PASSWORD_HASHER, useClass: BcryptPasswordHasher },
     RegisterUseCase,
     LoginUseCase,
+    RefreshAccessTokenUseCase,
     CreateAnalystUseCase,
     GetUserUseCase,
     GetUserRolesUseCase,

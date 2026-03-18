@@ -4,18 +4,13 @@ Base URL local: `http://localhost:4000`
 
 Swagger UI: `GET /docs`
 
-## Salud / prueba
-
-- **GET /**: Público (`AppController.getHello`)
-- **GET /mensaje1**: Público
-- **GET /mensaje2**: Público
-
 ## IAM
 
 ### Auth (`/auth`) (público)
 
 - **POST /auth/register**: Registrar usuario (rol CLIENT por defecto si existe)
 - **POST /auth/login**: Login (JWT)
+- **POST /auth/refresh**: Refrescar access token (acepta token expirado)
 
 ### Users (`/users`) (requiere JWT + RolesGuard)
 
