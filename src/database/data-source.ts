@@ -11,11 +11,11 @@ export const AppDataSource = new DataSource({
   ...(useUrl
     ? { url: process.env.DATABASE_URL }
     : {
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: 'postgres',
-        database: 'cashup',
+        host: process.env.DB_HOST,
+        port: Number(process.env.DB_PORT),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
       }),
   entities: [],
   migrations: [SeedRoles1737300000000],

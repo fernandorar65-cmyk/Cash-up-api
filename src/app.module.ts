@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AppService } from './app.service';
 import { IamModule } from './modules/iam/iam.module';
@@ -17,9 +18,10 @@ import { typeOrmEntities } from './entities-index';
       load: [configuration],
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        url: "postgresql://postgres:postgres@localhost:5432/cashup",
+        url: config.get<string>('database.url'),
         entities: typeOrmEntities,
         synchronize: false,
       }),

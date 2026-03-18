@@ -1,10 +1,12 @@
+import 'dotenv/config';
+
 export default () => ({
-  port: parseInt(process.env.PORT ?? '3000', 10),
+  port: Number(process.env.PORT),
   database: {
-    url: process.env.DATABASE_URL ?? 'postgresql://localhost:5432/cashup',
+    url: process.env.DATABASE_URL,
   },
   jwt: {
-    secret: process.env.JWT_SECRET ?? 'default-secret-change-in-production',
-    expiresIn: process.env.JWT_EXPIRES_IN ?? '1h',
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN,
   },
 });
