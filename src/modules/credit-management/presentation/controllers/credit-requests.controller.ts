@@ -20,7 +20,6 @@ import type { RequestUser } from '../../../iam/presentation/guards/jwt.strategy'
 import { RolesGuard } from '../../../iam/presentation/guards/roles.guard';
 import { Roles } from '../../../iam/presentation/guards/roles.decorator';
 
-// Reutilizamos use-cases existentes mientras se completa la migración de application.
 import { CreateCreditRequestUseCase } from '../../application/use-cases/create-credit-request.use-case';
 import { ListMyCreditRequestsUseCase } from '../../application/use-cases/list-my-credit-requests.use-case';
 import { ListPendingCreditRequestsUseCase } from '../../application/use-cases/list-pending-credit-requests.use-case';
@@ -76,6 +75,19 @@ export class CreditRequestsController {
   @ApiOperation({ summary: 'Bandeja: solicitudes pendientes (analista/admin)' })
   @ApiResponse({ status: 200 })
   async listPending() {
+    return this.listPendingCreditRequestsUseCase.execute();
+  }
+
+  @Get('pending-approval')
+  @UseGuards(RolesGuard)
+  @Roles(RoleName.ANALYST, RoleName.ADMIN)
+  @ApiOperation({
+    summary: 'Pendientes de aprobar (analista/admin)',
+    description:
+      'Alias de bandeja para analistas: devuelve solicitudes PENDING y UNDER_REVIEW.',
+  })
+  @ApiResponse({ status: 200 })
+  async listPendingApproval() {
     return this.listPendingCreditRequestsUseCase.execute();
   }
 

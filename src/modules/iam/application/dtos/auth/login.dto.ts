@@ -5,6 +5,7 @@ export interface LoginCommand {
 
 export interface LoginResponse {
   access_token: string;
+  role: string | null;
   user: { id: string; email: string; name: string };
 }
 
