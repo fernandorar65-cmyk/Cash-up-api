@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   UseFilters,
   UseGuards,
@@ -24,7 +25,13 @@ import { GetClientUseCase } from '../application/use-cases/get-client.use-case';
 import { GetClientCreditProfileUseCase } from '../application/use-cases/get-client-credit-profile.use-case';
 import { CreateClientUseCase } from '../application/use-cases/create-client.use-case';
 import { RunInitialCreditEvaluationUseCase } from '../application/use-cases/run-initial-credit-evaluation.use-case';
+import { GetMyClientUseCase } from '../application/use-cases/get-my-client.use-case';
+import { UpdateMyClientUseCase } from '../application/use-cases/update-my-client.use-case';
+import { ListClientEvaluationsUseCase } from '../application/use-cases/list-client-evaluations.use-case';
+import { RunCreditEvaluationUseCase } from '../application/use-cases/run-credit-evaluation.use-case';
 import { CreateClientDto } from './dto/create-client.dto';
+import { UpdateClientHttpDto } from './dto/update-client.http.dto';
+import { RunCreditEvaluationHttpDto } from './dto/run-credit-evaluation.http.dto';
 import { HttpExceptionFilter } from '../../../common/filters/http-exception.filter';
 
 @ApiTags('clients')
@@ -37,6 +44,10 @@ export class ClientsController {
     private readonly getClientCreditProfileUseCase: GetClientCreditProfileUseCase,
     private readonly createClientUseCase: CreateClientUseCase,
     private readonly runInitialCreditEvaluationUseCase: RunInitialCreditEvaluationUseCase,
+    private readonly getMyClientUseCase: GetMyClientUseCase,
+    private readonly updateMyClientUseCase: UpdateMyClientUseCase,
+    private readonly listClientEvaluationsUseCase: ListClientEvaluationsUseCase,
+    private readonly runCreditEvaluationUseCase: RunCreditEvaluationUseCase,
   ) {}
 
   @Post(':evaluationOutcome')
@@ -110,6 +121,50 @@ export class ClientsController {
       clientId: client.id,
     });
     return { ...client, evaluation };
+  }
+
+  @Get('me')
+  @UseGuards(RolesGuard)
+  @Roles(RoleName.CLIENT)
+  @ApiOperation({ summary: 'Mi perfil de cliente (cliente)' })
+  async me(@CurrentUser() user: RequestUser) {
+    return this.getMyClientUseCase.execute(user.userId);
+  }
+
+  @Patch('me')
+  @UseGuards(RolesGuard)
+  @Roles(RoleName.CLIENT)
+  @ApiOperation({ summary: 'Actualizar mi perfil de cliente (cliente)' })
+  async updateMe(@Body() dto: UpdateClientHttpDto, @CurrentUser() user: RequestUser) {
+    return this.updateMyClientUseCase.execute({
+      userId: user.userId,
+      name: dto.name,
+      email: dto.email,
+      phone: dto.phone,
+      monthlyIncome: dto.monthlyIncome,
+    });
+  }
+
+  @Get(':id/evaluations')
+  @ApiOperation({ summary: 'Historial de evaluaciones (staff o dueño)' })
+  async listEvaluations(@Param('id') id: string, @CurrentUser() user: RequestUser) {
+    return this.listClientEvaluationsUseCase.execute(id, user.userId);
+  }
+
+  @Post(':id/evaluations')
+  @UseGuards(RolesGuard)
+  @Roles(RoleName.ANALYST, RoleName.ADMIN)
+  @ApiOperation({ summary: 'Re-evaluar cliente (analyst/admin)' })
+  async runEvaluation(
+    @Param('id') id: string,
+    @Body() dto: RunCreditEvaluationHttpDto,
+    @CurrentUser() user: RequestUser,
+  ) {
+    return this.runCreditEvaluationUseCase.execute({
+      clientId: id,
+      evaluationOutcome: dto.evaluationOutcome,
+      evaluatedByUserId: user.userId,
+    });
   }
 
   @Get(':id/credit-profile')

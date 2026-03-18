@@ -7,6 +7,7 @@ import {
   Post,
   UseFilters,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -27,11 +28,15 @@ import { ListPendingCreditRequestsUseCase } from '../../application/use-cases/li
 import { GetCreditRequestUseCase } from '../../application/use-cases/get-credit-request.use-case';
 import { RejectCreditRequestUseCase } from '../../application/use-cases/reject-credit-request.use-case';
 import { ApproveCreditRequestUseCase } from '../../application/use-cases/approve-credit-request.use-case';
+import { ListCreditRequestsUseCase } from '../../application/use-cases/list-credit-requests.use-case';
+import { CancelCreditRequestUseCase } from '../../application/use-cases/cancel-credit-request.use-case';
+import { MarkCreditRequestUnderReviewUseCase } from '../../application/use-cases/mark-credit-request-under-review.use-case';
 
 import { CreateCreditRequestHttpDto } from '../dtos/request/create-credit-request.http.dto';
 import { ApproveCreditRequestHttpDto } from '../dtos/request/approve-credit-request.http.dto';
 import { RejectCreditRequestHttpDto } from '../dtos/request/reject-credit-request.http.dto';
 import { HttpExceptionFilter } from '../../../../common/filters/http-exception.filter';
+import { CreditRequestStatus } from '../../domain/enums/credit-request-status.enum';
 
 @ApiTags('credit-requests')
 @ApiBearerAuth('access-token')
@@ -42,10 +47,31 @@ export class CreditRequestsController {
     private readonly createCreditRequestUseCase: CreateCreditRequestUseCase,
     private readonly listMyCreditRequestsUseCase: ListMyCreditRequestsUseCase,
     private readonly listPendingCreditRequestsUseCase: ListPendingCreditRequestsUseCase,
+    private readonly listCreditRequestsUseCase: ListCreditRequestsUseCase,
     private readonly getCreditRequestUseCase: GetCreditRequestUseCase,
     private readonly rejectCreditRequestUseCase: RejectCreditRequestUseCase,
     private readonly approveCreditRequestUseCase: ApproveCreditRequestUseCase,
+    private readonly cancelCreditRequestUseCase: CancelCreditRequestUseCase,
+    private readonly markCreditRequestUnderReviewUseCase: MarkCreditRequestUnderReviewUseCase,
   ) {}
+
+  @Get()
+  @UseGuards(RolesGuard)
+  @Roles(RoleName.ANALYST, RoleName.ADMIN)
+  @ApiOperation({ summary: 'Listar solicitudes con filtros (staff)' })
+  async list(
+    @Query('clientId') clientId?: string,
+    @Query('status') status?: CreditRequestStatus,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ) {
+    return this.listCreditRequestsUseCase.execute({
+      clientId,
+      status,
+      from: from ? new Date(from) : undefined,
+      to: to ? new Date(to) : undefined,
+    });
+  }
 
   @Get('pending')
   @UseGuards(RolesGuard)
@@ -104,6 +130,28 @@ export class CreditRequestsController {
       creditRequestId: id,
       analystUserId: user.userId,
       rejectionReason: dto.rejectionReason,
+    });
+  }
+
+  @Patch(':id/cancel')
+  @UseGuards(RolesGuard)
+  @Roles(RoleName.CLIENT)
+  @ApiOperation({ summary: 'Cancelar solicitud (cliente)' })
+  async cancel(@Param('id') id: string, @CurrentUser() user: RequestUser) {
+    return this.cancelCreditRequestUseCase.execute({
+      creditRequestId: id,
+      requesterUserId: user.userId,
+    });
+  }
+
+  @Patch(':id/under-review')
+  @UseGuards(RolesGuard)
+  @Roles(RoleName.ANALYST, RoleName.ADMIN)
+  @ApiOperation({ summary: 'Marcar solicitud en revisión (staff)' })
+  async underReview(@Param('id') id: string, @CurrentUser() user: RequestUser) {
+    return this.markCreditRequestUnderReviewUseCase.execute({
+      creditRequestId: id,
+      reviewerUserId: user.userId,
     });
   }
 

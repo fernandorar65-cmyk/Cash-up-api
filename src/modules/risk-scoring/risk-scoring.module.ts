@@ -29,6 +29,10 @@ import { GetClientUseCase } from './application/use-cases/get-client.use-case';
 import { GetClientCreditProfileUseCase } from './application/use-cases/get-client-credit-profile.use-case';
 import { CreateClientUseCase } from './application/use-cases/create-client.use-case';
 import { RunInitialCreditEvaluationUseCase } from './application/use-cases/run-initial-credit-evaluation.use-case';
+import { GetMyClientUseCase } from './application/use-cases/get-my-client.use-case';
+import { UpdateMyClientUseCase } from './application/use-cases/update-my-client.use-case';
+import { ListClientEvaluationsUseCase } from './application/use-cases/list-client-evaluations.use-case';
+import { RunCreditEvaluationUseCase } from './application/use-cases/run-credit-evaluation.use-case';
 
 import { ClientsController } from './presentation/clients.controller';
 
@@ -68,6 +72,10 @@ import { ClientsController } from './presentation/clients.controller';
     GetClientCreditProfileUseCase,
     CreateClientUseCase,
     RunInitialCreditEvaluationUseCase,
+    GetMyClientUseCase,
+    UpdateMyClientUseCase,
+    ListClientEvaluationsUseCase,
+    RunCreditEvaluationUseCase,
   ],
   exports: [
     CLIENT_REPOSITORY,

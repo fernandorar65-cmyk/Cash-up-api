@@ -6,6 +6,12 @@ export interface ICreditRequestRepository {
   findByClientId(clientId: string): Promise<CreditRequest[]>;
   findByStatuses(statuses: CreditRequestStatus[]): Promise<CreditRequest[]>;
   findActivePendingByClientId(clientId: string): Promise<CreditRequest | null>;
+  findFiltered(params: {
+    clientId?: string;
+    status?: CreditRequestStatus;
+    from?: Date;
+    to?: Date;
+  }): Promise<CreditRequest[]>;
   save(req: CreditRequest): Promise<void>;
 }
 

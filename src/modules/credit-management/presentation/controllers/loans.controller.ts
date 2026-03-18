@@ -1,10 +1,16 @@
-import { Controller, Get, Param, Query, UseFilters } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseFilters, UseGuards } from '@nestjs/common';
 import { HttpExceptionFilter } from '../../../../common/filters/http-exception.filter';
 
 import { GetLoanUseCase } from '../../application/use-cases/get-loan.use-case';
 import { ListLoansByClientUseCase } from '../../application/use-cases/list-loans-by-client.use-case';
 import { ListLoansByStatusUseCase } from '../../application/use-cases/list-loans-by-status.use-case';
 import { ListInstallmentsByLoanUseCase } from '../../application/use-cases/list-installments-by-loan.use-case';
+import { ListMyLoansUseCase } from '../../application/use-cases/list-my-loans.use-case';
+import { RolesGuard } from '../../../iam/presentation/guards/roles.guard';
+import { Roles } from '../../../iam/presentation/guards/roles.decorator';
+import { RoleName } from '../../../iam/domain/enums/role-name.enum';
+import { CurrentUser } from '../../../iam/presentation/guards/current-user.decorator';
+import type { RequestUser } from '../../../iam/presentation/guards/jwt.strategy';
 
 @Controller('loans')
 @UseFilters(HttpExceptionFilter)
@@ -14,7 +20,15 @@ export class LoansController {
     private readonly listLoansByClientUseCase: ListLoansByClientUseCase,
     private readonly listLoansByStatusUseCase: ListLoansByStatusUseCase,
     private readonly listInstallmentsByLoanUseCase: ListInstallmentsByLoanUseCase,
+    private readonly listMyLoansUseCase: ListMyLoansUseCase,
   ) {}
+
+  @Get('my')
+  @UseGuards(RolesGuard)
+  @Roles(RoleName.CLIENT)
+  async my(@CurrentUser() user: RequestUser) {
+    return this.listMyLoansUseCase.execute(user.userId);
+  }
 
   @Get()
   async list(@Query('clientId') clientId?: string, @Query('status') status?: string) {

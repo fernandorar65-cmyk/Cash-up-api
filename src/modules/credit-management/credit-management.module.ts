@@ -19,9 +19,14 @@ import { ListInstallmentsByLoanUseCase } from './application/use-cases/list-inst
 import { CreateCreditRequestUseCase } from './application/use-cases/create-credit-request.use-case';
 import { ListMyCreditRequestsUseCase } from './application/use-cases/list-my-credit-requests.use-case';
 import { ListPendingCreditRequestsUseCase } from './application/use-cases/list-pending-credit-requests.use-case';
+import { ListCreditRequestsUseCase } from './application/use-cases/list-credit-requests.use-case';
 import { GetCreditRequestUseCase } from './application/use-cases/get-credit-request.use-case';
 import { RejectCreditRequestUseCase } from './application/use-cases/reject-credit-request.use-case';
 import { ApproveCreditRequestUseCase } from './application/use-cases/approve-credit-request.use-case';
+import { CancelCreditRequestUseCase } from './application/use-cases/cancel-credit-request.use-case';
+import { MarkCreditRequestUnderReviewUseCase } from './application/use-cases/mark-credit-request-under-review.use-case';
+import { ListMyLoansUseCase } from './application/use-cases/list-my-loans.use-case';
+import { ListMyInstallmentsUseCase } from './application/use-cases/list-my-installments.use-case';
 
 import { LoansController } from './presentation/controllers/loans.controller';
 import { InstallmentsController } from './presentation/controllers/installments.controller';
@@ -56,9 +61,14 @@ import { CreditRequestsController } from './presentation/controllers/credit-requ
     CreateCreditRequestUseCase,
     ListMyCreditRequestsUseCase,
     ListPendingCreditRequestsUseCase,
+    ListCreditRequestsUseCase,
     GetCreditRequestUseCase,
     RejectCreditRequestUseCase,
     ApproveCreditRequestUseCase,
+    CancelCreditRequestUseCase,
+    MarkCreditRequestUnderReviewUseCase,
+    ListMyLoansUseCase,
+    ListMyInstallmentsUseCase,
   ],
   exports: [
     CREDIT_MANAGEMENT_TOKENS.LOAN_REPOSITORY,

@@ -48,6 +48,30 @@ export class TypeOrmCreditRequestRepository implements ICreditRequestRepository 
     return list.map(toDomainCreditRequest);
   }
 
+  async findFiltered(params: {
+    clientId?: string;
+    status?: CreditRequestStatus;
+    from?: Date;
+    to?: Date;
+  }): Promise<CreditRequest[]> {
+    const qb = this.repo.createQueryBuilder('cr');
+    if (params.clientId) {
+      qb.andWhere('cr.clientId = :clientId', { clientId: params.clientId });
+    }
+    if (params.status) {
+      qb.andWhere('cr.status = :status', { status: params.status });
+    }
+    if (params.from) {
+      qb.andWhere('cr.createdAt >= :from', { from: params.from });
+    }
+    if (params.to) {
+      qb.andWhere('cr.createdAt <= :to', { to: params.to });
+    }
+    qb.orderBy('cr.createdAt', 'DESC');
+    const list = await qb.getMany();
+    return list.map(toDomainCreditRequest);
+  }
+
   async save(req: CreditRequest): Promise<void> {
     await this.repo.save(toOrmCreditRequest(req));
   }
