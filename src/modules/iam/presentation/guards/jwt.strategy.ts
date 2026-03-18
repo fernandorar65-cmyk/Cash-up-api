@@ -22,10 +22,15 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     @Inject(IAM_TOKENS.USER_REPOSITORY) private readonly userRepo: IUserRepository,
   ) {
     const secret = configService.get<string>('jwt.secret');
+    if (!secret) {
+      throw new Error(
+        'JWT secret no configurado. Define JWT_SECRET (config: jwt.secret).',
+      );
+    }
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: secret ?? 'default-secret-change-in-production',
+      secretOrKey: secret,
     });
   }
 

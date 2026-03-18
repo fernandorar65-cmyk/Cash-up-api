@@ -41,6 +41,7 @@ Requiere rol **CLIENT** para crear perfil.
 
 ### Credit Requests (`/credit-requests`)
 
+- **GET /credit-requests/pending-approval**: Pendientes de aprobar (ANALYST/ADMIN)
 - **GET /credit-requests/pending**: Requiere rol **ANALYST** o **ADMIN**
 - **GET /credit-requests/my**: Requiere rol **CLIENT**
 - **POST /credit-requests**: Requiere rol **CLIENT** (crear solicitud)
