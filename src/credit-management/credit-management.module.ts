@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { IamModule } from '../iam/iam.module';
+import { RiskScoringModule } from '../risk-scoring/risk-scoring.module';
 import { Loan } from './domain/entities/loan.entity';
+import { CreditRequest } from './domain/entities/credit-request.entity';
 import { LoanRefinance } from './domain/entities/loan-refinance.entity';
 import { Installment } from './domain/entities/installment.entity';
 import { LoanCharge } from './domain/entities/loan-charge.entity';
@@ -15,8 +18,10 @@ import {
   PENALTY_POLICY_REPOSITORY,
   LATE_FEE_REPOSITORY,
   LOAN_HISTORY_REPOSITORY,
+  CREDIT_REQUEST_REPOSITORY,
 } from './application/ports';
 import { LoanRepository } from './infrastructure/persistence/loan.repository';
+import { CreditRequestRepository } from './infrastructure/persistence/credit-request.repository';
 import { LoanRefinanceRepository } from './infrastructure/persistence/loan-refinance.repository';
 import { InstallmentRepository } from './infrastructure/persistence/installment.repository';
 import { LoanChargeRepository } from './infrastructure/persistence/loan-charge.repository';
@@ -30,11 +35,21 @@ import { GetInstallmentUseCase } from './application/use-cases/get-installment.u
 import { ListInstallmentsByLoanUseCase } from './application/use-cases/list-installments-by-loan.use-case';
 import { LoansController } from './presentation/loans.controller';
 import { InstallmentsController } from './presentation/installments.controller';
+import { CreditRequestsController } from './presentation/credit-requests.controller';
+import { CreateCreditRequestUseCase } from './application/use-cases/create-credit-request.use-case';
+import { ListMyCreditRequestsUseCase } from './application/use-cases/list-my-credit-requests.use-case';
+import { ListPendingCreditRequestsUseCase } from './application/use-cases/list-pending-credit-requests.use-case';
+import { GetCreditRequestUseCase } from './application/use-cases/get-credit-request.use-case';
+import { RejectCreditRequestUseCase } from './application/use-cases/reject-credit-request.use-case';
+import { ApproveCreditRequestUseCase } from './application/use-cases/approve-credit-request.use-case';
 
 @Module({
   imports: [
+    IamModule,
+    RiskScoringModule,
     TypeOrmModule.forFeature([
       Loan,
+      CreditRequest,
       LoanRefinance,
       Installment,
       LoanCharge,
@@ -43,8 +58,13 @@ import { InstallmentsController } from './presentation/installments.controller';
       LoanHistory,
     ]),
   ],
-  controllers: [LoansController, InstallmentsController],
+  controllers: [
+    LoansController,
+    InstallmentsController,
+    CreditRequestsController,
+  ],
   providers: [
+    { provide: CREDIT_REQUEST_REPOSITORY, useClass: CreditRequestRepository },
     { provide: LOAN_REPOSITORY, useClass: LoanRepository },
     { provide: LOAN_REFINANCE_REPOSITORY, useClass: LoanRefinanceRepository },
     { provide: INSTALLMENT_REPOSITORY, useClass: InstallmentRepository },
@@ -57,6 +77,12 @@ import { InstallmentsController } from './presentation/installments.controller';
     ListLoansByStatusUseCase,
     GetInstallmentUseCase,
     ListInstallmentsByLoanUseCase,
+    CreateCreditRequestUseCase,
+    ListMyCreditRequestsUseCase,
+    ListPendingCreditRequestsUseCase,
+    GetCreditRequestUseCase,
+    RejectCreditRequestUseCase,
+    ApproveCreditRequestUseCase,
   ],
   exports: [
     LOAN_REPOSITORY,

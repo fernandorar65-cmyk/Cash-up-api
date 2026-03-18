@@ -235,16 +235,62 @@ curl -s "http://localhost:3000/clients/$CLIENT_ID/credit-profile" \
 
 ---
 
-## 5. Flujo rápido de prueba (orden)
+## 5. Solicitudes de préstamo (`credit-requests`)
 
-1. `POST /auth/register` con email nuevo  
-2. `POST /auth/login` → copiar `access_token`  
-3. `POST /clients` o `/clients/1` o `/clients/2` con el token  
-4. Opcional: `GET /clients/{id}` y `GET /clients/{id}/credit-profile`
+**Cliente** (después de tener perfil + evaluación inicial):
+
+```http
+POST /credit-requests
+Authorization: Bearer <token_cliente>
+Content-Type: application/json
+```
+
+```json
+{
+  "requestedAmount": 8000,
+  "termMonths": 12,
+  "currency": "PEN",
+  "purpose": "Personal",
+  "clientNotes": "Opcional"
+}
+```
+
+- **GET `/credit-requests/my`** — lista tus solicitudes (rol `client`).
+- **GET `/credit-requests/:id`** — detalle (dueño o analista/admin).
+
+**Analista o admin** (token de usuario con rol `analyst` o `admin`):
+
+- **GET `/credit-requests/pending`** — bandeja pendientes.
+- **PATCH `/credit-requests/:id/reject`** — body `{ "rejectionReason": "..." }`.
+- **PATCH `/credit-requests/:id/approve`** — crea `Loan` + cuotas:
+
+```json
+{
+  "approvedAmount": 8000,
+  "approvedTermMonths": 12,
+  "approvedInterestRate": 24.5,
+  "approvedInterestType": "FIXED_ANNUAL",
+  "firstInstallmentDueDate": "2025-05-01"
+}
+```
+
+(`firstInstallmentDueDate` es opcional; por defecto ~+1 mes.)
+
+Luego el cronograma está en **GET `/loans/:loanId/installments`**.
 
 ---
 
-## 6. Swagger / Postman
+## 6. Flujo rápido de prueba (orden)
+
+1. `POST /auth/register` → cliente  
+2. `POST /auth/login` (cliente) → token  
+3. `POST /clients` (o `/1` / `/2`) → perfil + evaluación  
+4. `POST /credit-requests` → solicitud  
+5. Con usuario **analista** (creado por admin con `POST /users/analysts`): login → `GET /credit-requests/pending` → `PATCH .../approve` o `.../reject`
+
+---
+
+## 7. Swagger / Postman
 
 En este repo **Swagger no está activado en `main.ts` por defecto**; puedes usar **Postman**, **Insomnia** o **Thunder Client** replicando las mismas URLs, método, JSON y header `Authorization: Bearer <token>`.
 
@@ -263,6 +309,12 @@ Si más adelante añades `@nestjs/swagger`, podrás documentar y probar desde el
 | POST | `/clients/2` | Bearer + rol client | Cliente + evaluación negativa simulada |
 | GET | `/clients/:id` | Bearer | Detalle cliente |
 | GET | `/clients/:id/credit-profile` | Bearer | Perfil de crédito |
+| POST | `/credit-requests` | Bearer + client | Nueva solicitud |
+| GET | `/credit-requests/my` | Bearer + client | Mis solicitudes |
+| GET | `/credit-requests/pending` | Bearer + analyst/admin | Bandeja |
+| GET | `/credit-requests/:id` | Bearer | Detalle (dueño o staff) |
+| PATCH | `/credit-requests/:id/reject` | Bearer + analyst/admin | Rechazar |
+| PATCH | `/credit-requests/:id/approve` | Bearer + analyst/admin | Aprobar → préstamo + cuotas |
 
 Campos obligatorios del body de **POST /clients**: `documentType`, `documentNumber`, `name`, `monthlyIncome`.  
 `email` y `phone` son opcionales.

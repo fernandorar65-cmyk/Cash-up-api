@@ -12,6 +12,7 @@ import { ClientBackgroundCheck } from './risk-scoring/domain/entities/client-bac
 import { ExternalDebt } from './risk-scoring/domain/entities/external-debt.entity';
 import { ClientCreditProfile } from './risk-scoring/domain/entities/client-credit-profile.entity';
 import { Loan } from './credit-management/domain/entities/loan.entity';
+import { CreditRequest } from './credit-management/domain/entities/credit-request.entity';
 import { LoanRefinance } from './credit-management/domain/entities/loan-refinance.entity';
 import { Installment } from './credit-management/domain/entities/installment.entity';
 import { LoanCharge } from './credit-management/domain/entities/loan-charge.entity';
@@ -34,6 +35,7 @@ export const typeOrmEntities = [
   ExternalDebt,
   ClientCreditProfile,
   Loan,
+  CreditRequest,
   LoanRefinance,
   Installment,
   LoanCharge,

@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { RegisterUseCase } from '../application/use-cases/register.use-case';
 import { LoginUseCase } from '../application/use-cases/login.use-case';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './resource/request/login.dto';
+import { RegisterDto } from './resource/request/register.dto';
 import { Public } from '../infrastructure/auth/public.decorator';
 
 @Controller('auth')

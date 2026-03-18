@@ -1,3 +1,4 @@
+export * from './credit-request.repository.port';
 export * from './loan.repository.port';
 export * from './loan-refinance.repository.port';
 export * from './installment.repository.port';

@@ -4,7 +4,7 @@ import { RoleName } from '../domain/enums/role-name.enum';
 import { GetUserUseCase } from '../application/use-cases/get-user.use-case';
 import { GetUserRolesUseCase } from '../application/use-cases/get-user-roles.use-case';
 import { CreateAnalystUseCase } from '../application/use-cases/create-analyst.use-case';
-import { CreateAnalystDto } from './dto/create-analyst.dto';
+import { CreateAnalystDto } from './resource/request/create-analyst.dto';
 import { RolesGuard } from '../infrastructure/auth/roles.guard';
 import { Roles } from '../infrastructure/auth/roles.decorator';
 
