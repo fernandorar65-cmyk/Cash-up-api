@@ -24,6 +24,7 @@ import { ClientCreditProfileRepository } from './infrastructure/persistence/clie
 import { GetClientUseCase } from './application/use-cases/get-client.use-case';
 import { GetClientCreditProfileUseCase } from './application/use-cases/get-client-credit-profile.use-case';
 import { CreateClientUseCase } from './application/use-cases/create-client.use-case';
+import { RunInitialCreditEvaluationUseCase } from './application/use-cases/run-initial-credit-evaluation.use-case';
 import { ClientsController } from './presentation/clients.controller';
 
 @Module({
@@ -61,6 +62,7 @@ import { ClientsController } from './presentation/clients.controller';
     GetClientUseCase,
     GetClientCreditProfileUseCase,
     CreateClientUseCase,
+    RunInitialCreditEvaluationUseCase,
   ],
   exports: [
     CLIENT_REPOSITORY,
